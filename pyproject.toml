@@ -1,0 +1,78 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aegis-pmx"
+version = "2.0.0"
+description = "Personality Matrix (PMX) - Survivable personality layer for autonomous AI"
+authors = [
+    {name = "Sam AI", email = "sam@aegis.ai"}
+]
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+    "aegis-core>=1.0.0",
+    "pydantic>=2.0.0",
+    "numpy>=1.24.0",
+    "structlog>=23.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.0.0",
+    "black>=22.0.0",
+    "isort>=5.0.0",
+    "mypy>=1.0.0",
+    "flake8>=5.0.0",
+]
+
+[project.scripts]
+sam-pmxd = "pmx.service:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "--cov=pmx",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+]
+asyncio_mode = "auto"
