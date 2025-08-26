@@ -1,0 +1,38 @@
+[Unit]
+Description=Sam's Personality Matrix (PMX) Service
+Documentation=https://github.com/bawtL-Labs/aegis-persona-matrix
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=sam
+Group=sam
+WorkingDirectory=/opt/sam/persona
+ExecStart=/usr/bin/sam-pmxd --host 0.0.0.0 --port 8001
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=sam-pmxd
+
+# Environment variables
+Environment=PYTHONPATH=/opt/sam
+Environment=PMX_LOG_LEVEL=INFO
+Environment=PMX_STORAGE_BACKEND=redis
+Environment=PMX_REDIS_URL=redis://localhost:6379
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/log /opt/sam/data
+
+# Resource limits
+LimitNOFILE=65536
+LimitNPROC=4096
+
+[Install]
+WantedBy=multi-user.target
